@@ -19,3 +19,13 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Webhook Receiver API", version="1.0.0", lifespan=lifespan)
 
 app.include_router(github_router, prefix="/webhooks", tags=["GitHub Webhooks"])
+
+for route in app.routes:
+    print(route)
+
+for route in app.router.routes:
+    if hasattr(route, "path"):
+        print(route.path, route.methods)
+
+print(github_router)
+print(github_router.routes)

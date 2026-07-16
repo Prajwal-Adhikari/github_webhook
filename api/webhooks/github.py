@@ -1,3 +1,4 @@
+print("LOADED:", __file__)
 from fastapi import (APIRouter, Request, Header, HTTPException, BackgroundTasks)
 
 from security.github_signature import verify_github_signature
