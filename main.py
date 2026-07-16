@@ -8,13 +8,12 @@ from db.models.github_event import GithubEvent
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create the database tables
+    print("Registered tables:", Base.metadata.tables.keys())
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
     yield
-    # Drop the database tables (optional, for cleanup)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
 
 app = FastAPI(title="Webhook Receiver API", version="1.0.0", lifespan=lifespan)
 
