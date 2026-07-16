@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GithubEvent:
+class GithubEventPayload:
     event_type: str
     delivery_id: str
     payload: dict

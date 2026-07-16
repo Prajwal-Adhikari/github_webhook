@@ -3,12 +3,12 @@ from sqlalchemy.exc import IntegrityError
 from db.session import SessionLocal
 from db.models.github_event import GithubEvent
 
-async def save_event(event_type: str, delivery_id: str, payload: dict):
+async def save_event(event: GithubEvent):
     async with SessionLocal() as session:
         event = GithubEvent(
-            event_type=event_type,
-            delivery_id=delivery_id,
-            payload=payload
+            event_type=event.event_type,
+            delivery_id=event.delivery_id,
+            payload=event.payload
         )
 
         session.add(event)
@@ -16,4 +16,4 @@ async def save_event(event_type: str, delivery_id: str, payload: dict):
             await session.commit()
         except IntegrityError:
             await session.rollback()
-            print(f"Duplicate delivery_id: {delivery_id}. Event not saved.")
+            print(f"Duplicate delivery_id: {event.delivery_id}. Event not saved.")

@@ -2,7 +2,7 @@ from fastapi import (APIRouter, Request, Header, HTTPException, BackgroundTasks)
 
 from security.github_signature import verify_github_signature
 from services.github_event_service import save_event
-from schemas.github_event import GithubEvent
+from schemas.github_event import GithubEventPayload
 
 router = APIRouter()
 
@@ -28,7 +28,7 @@ async def github_webhook(
     event_type = request.headers.get('X-GitHub-Event')
     delivery_id = request.headers.get('X-GitHub-Delivery')
 
-    github_event = GithubEvent(
+    github_event = GithubEventPayload(
         event_type=event_type,
         delivery_id=delivery_id,
         payload=payload
@@ -36,4 +36,4 @@ async def github_webhook(
 
     background_tasks.add_task(save_event, github_event)
     return {
-        "status": "success",}
+        "status": "success"}
