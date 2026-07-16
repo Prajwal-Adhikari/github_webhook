@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from db.session import engine
 from db.base import Base
-
+from db.models.github_event import GithubEvent
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -16,6 +16,6 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
-app = FastAPI(title="Webhook Receiver API", version="1.0.0")
+app = FastAPI(title="Webhook Receiver API", version="1.0.0", lifespan=lifespan)
 
 app.include_router(github_router, prefix="/webhooks", tags=["GitHub Webhooks"])
